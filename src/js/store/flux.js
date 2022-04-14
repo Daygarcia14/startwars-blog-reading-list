@@ -1,45 +1,76 @@
 const getState = ({ getStore, getActions, setStore }) => {
-	return {
-		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
-		},
-		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
+  return {
+    store: {
+      URL_BASE: "https://www.swapi.tech/api",
+      endPoints: ["people", "planets", "vehicles"],
+      people: JSON.parse(localStorage.getItem("people")) || [],
+      planets: JSON.parse(localStorage.getItem("planets")) || [],
+      vehicles: JSON.parse(localStorage.getItem("vehicles")) || [],
+      favorites: JSON.parse(localStorage.getItem("favorites")) || [],
+    },
+    actions: {
+      fetchItems: async () => {
+        let store = getStore();
+        if (!store.people.length) {
+          for (let endPoint of store.endPoints) {
+            try {
+              let response = await fetch(`${store.URL_BASE}/${endPoint}`);
+              if (response.ok) {
+                let data = await response.json();
+                data.results.map(async (item) => {
+                  let responseTwo = await fetch(
+                    `${store.URL_BASE}/${endPoint}/${item.uid}`
+                  );
+                  let result = await responseTwo.json();
+                  setStore({
+                    ...store,
+                    [endPoint]: [...store[endPoint], result.result],
+                  });
+                  localStorage.setItem(
+                    endPoint,
+                    JSON.stringify(store[endPoint])
+                  );
+                });
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        }
+      },
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+      addFav: (id) => {
+        const store = getStore();
+        let existe = store.favorites.find((item) => {
+          return item._id == id;
+        });
+        if (!existe) {
+          for (let endPoint of store.endPoints) {
+            let favorite;
+            favorite = store[endPoint].find((item) => {
+              return item._id == id;
+            });
+            if (favorite) {
+              setStore({
+                ...store,
+                favorites: [...store.favorites, favorite],
+              });
+              break;
+            }
 
-				//reset the global store
-				setStore({ demo: demo });
-			}
-		}
-	};
+          }
+        } else {
+          let newFavorite = store.favorites.filter((item) => {
+            return item._id != id;
+          });
+          setStore({
+            ...store,
+            favorites: newFavorite,
+          });
+        }
+      },
+    },
+  };
 };
 
 export default getState;

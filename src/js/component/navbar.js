@@ -1,17 +1,57 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import starWarsLogo from "../../img/start-wars-logo.jpg";
+import { Context } from "../store/appContext";
+import deleteFav from "../store/flux";
+export const Navbar = (_id) => {
+  const { store, actions } = useContext(Context);
 
-export const Navbar = () => {
-	return (
-		<nav className="navbar navbar-light bg-light mb-3">
-			<Link to="/">
-				<span className="navbar-brand mb-0 h1">React Boilerplate</span>
-			</Link>
-			<div className="ml-auto">
-				<Link to="/demo">
-					<button className="btn btn-primary">Check the Context in action</button>
-				</Link>
-			</div>
-		</nav>
-	);
+  console.log(store.favorites);
+  return (
+    <nav className="navbar navbar-light bg-light mb-3 px-5">
+      <Link to="/">
+        <img
+          className="rounded-circle"
+          src={starWarsLogo}
+          style={{ width: "70px", height: "70px" }}
+        />
+      </Link>
+      <div className="mx-4">
+        <div className="dropdown">
+          <button
+            className="btn btn-primary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Favorites
+            <span className="badge bg-secondary">{store.favorites.length}</span>
+          </button>
+          <ul
+            className="dropdown-menu text-center"
+            aria-labelledby="dropdownMenuButton1"
+          >
+            {store.favorites == "" && <li>(empty)</li>}
+              {store.favorites.map((item) => {
+                return (
+                  <li key={item._id} className="d-flex justify-content-between p-2">
+                    <span>{item.properties.name}</span>
+                    <button
+                      className="btn btn-outline-secondary ms-2"
+                      type="button"
+                      onClick={() => actions.addFav(item._id)}
+                    >
+                      <i className="far fa-trash-alt" />
+                    </button>
+                  </li>
+                );
+              })}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
 };
+
+export default Navbar;
