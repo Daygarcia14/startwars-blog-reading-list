@@ -1,7 +1,8 @@
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
-      URL_BASE: "https://www.swapi.tech/api",
+      // URL_BASE: "https://www.swapi.tech/api",
+      URL_BASE: "https://3000-4geeksacade-flaskresthe-5kgz88km123.ws-us44.gitpod.io",
       endPoints: ["people", "planets", "vehicles"],
       people: JSON.parse(localStorage.getItem("people")) || [],
       planets: JSON.parse(localStorage.getItem("planets")) || [],
