@@ -18,14 +18,14 @@ return(
         <div className="scroll ">
         <div className="row flex-nowrap">
 				{store.people.map((character) => (
-					<Card key= {`people${character.uid}`} {...character} />
+					<Card key= {`people${character.id}`} character= {character} />
 				))}
 			</div>
         </div>
 	</div>
     
     <div className="container mb-4">
-    <h1>Planets</h1>
+    {/* <h1>Planets</h1>
     <div className="scroll ">
 			<div className="row flex-nowrap">
 				{store.planets.map((planet) => (
@@ -43,7 +43,7 @@ return(
 					<CardVehicles key={`vehicles${vehicle.uid}`} {...vehicle} />
 				))}
 			</div>
-            </div>
+            </div> */}
 	</div>
     </>
 );

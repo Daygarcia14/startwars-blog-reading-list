@@ -2,6 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
       // URL_BASE: "https://www.swapi.tech/api",
+      token: "",
       URL_BASE: "https://3000-4geeksacade-flaskresthe-5kgz88km123.ws-us44.gitpod.io",
       endPoints: ["people", "planets", "vehicles"],
       people: JSON.parse(localStorage.getItem("people")) || [],
@@ -11,33 +12,52 @@ const getState = ({ getStore, getActions, setStore }) => {
     },
     actions: {
       fetchItems: async () => {
-        let store = getStore();
-        if (!store.people.length) {
-          for (let endPoint of store.endPoints) {
-            try {
-              let response = await fetch(`${store.URL_BASE}/${endPoint}`);
-              if (response.ok) {
-                let data = await response.json();
-                data.results.map(async (item) => {
-                  let responseTwo = await fetch(
-                    `${store.URL_BASE}/${endPoint}/${item.uid}`
-                  );
-                  let result = await responseTwo.json();
-                  setStore({
-                    ...store,
-                    [endPoint]: [...store[endPoint], result.result],
-                  });
-                  localStorage.setItem(
-                    endPoint,
-                    JSON.stringify(store[endPoint])
-                  );
-                });
+          let store = getStore();
+          if (!store.people.length && !store.planets.length){
+            try{
+              let response = await fetch(`${store.URL_BASE}/characters`)
+              let response1 = await fetch(`${store.URL_BASE}/planets`)
+              let data = await response.json()
+              let data1 = await response1.json()
+              console.log(data)
+              console.log(data1)
+              if(response.ok){
+                localStorage.setItem("people", JSON.stringify(data))
+                localStorage.setItem("planets", JSON.stringify(data1))
+              }else{
+
               }
-            } catch (error) {
-              console.log(error);
+            }catch(error){
+              console.log("Hubo un error", error)
             }
           }
-        }
+
+        // if (!store.people.length) {
+        //   for (let endPoint of store.endPoints) {
+        //     try {
+        //       let response = await fetch(`${store.URL_BASE}/${endPoint}`);
+        //       if (response.ok) {
+        //         let data = await response.json();
+        //         data.results.map(async (item) => {
+        //           let responseTwo = await fetch(
+        //             `${store.URL_BASE}/${endPoint}/${item.uid}`
+        //           );
+        //           let result = await responseTwo.json();
+        //           setStore({
+        //             ...store,
+        //             [endPoint]: [...store[endPoint], result.result],
+        //           });
+        //           localStorage.setItem(
+        //             endPoint,
+        //             JSON.stringify(store[endPoint])
+        //           );
+        //         });
+        //       }
+        //     } catch (error) {
+        //       console.log(error);
+        //     }
+        //   }
+        // }
       },
 
       addFav: (id) => {

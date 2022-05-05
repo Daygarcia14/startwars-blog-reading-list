@@ -7,6 +7,7 @@ import { Single } from "./views/single";
 import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Details } from "../js/component/details";
+import { Register } from "./component/Register";
 
 //create your first component
 const Layout = () => {
@@ -21,6 +22,8 @@ const Layout = () => {
 					<Navbar />
 					<Routes>
 						<Route path="/" element={<Home />}>
+						</Route>
+						<Route path="/register" element={<Register />}>
 						</Route>
 						<Route path="/:nature/:id" element={<Details />}>
 						</Route>

@@ -17,6 +17,7 @@ export const Navbar = (_id) => {
         />
       </Link>
       <div className="mx-4">
+        {store.token.length > 0 ? 
         <div className="dropdown">
           <button
             className="btn btn-primary dropdown-toggle"
@@ -49,6 +50,13 @@ export const Navbar = (_id) => {
               })}
           </ul>
         </div>
+        :(
+          <>
+          <Link to = '/register'></Link>
+          <button type="button">Login</button>
+          </>
+        )
+        }
       </div>
     </nav>
   );
