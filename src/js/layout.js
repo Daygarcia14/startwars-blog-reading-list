@@ -6,8 +6,9 @@ import { Demo } from "./views/demo";
 import { Single } from "./views/single";
 import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
-import { Details } from "../js/component/details";
-import { Register } from "./component/Register";
+import  Details  from "../js/component/details";
+import Register from "./component/register";
+import Login from "./component/login"
 
 //create your first component
 const Layout = () => {

@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import propTypes from 'prop-types';
 
-export const Card = ({ uid, _id, character }) => {
-  const { store, actions } = useContext(Context);
-  const {gender, hair_color, eye_color, name} = character;
-  console.log(character)
+const Card = ({character, nature }) => {
+  const { actions } = useContext(Context);
+  const {gender, hair_color, eye_color, name, id} = character;
   return (
     <>
       <div className="card m-3" style={{ width: "18rem" }}>
@@ -24,11 +24,11 @@ export const Card = ({ uid, _id, character }) => {
             Eye Color: {eye_color}
           </p>
           <div className="d-flex justify-content-between">
-            <Link to={`/people/${uid}`} className="btn btn-outline-primary">
+            <Link to={`/${nature}/${id}`} className="btn btn-outline-primary">
               Learn more!
             </Link>
             <button
-              onClick={() => actions.addFav(_id)}
+              onClick={() => actions.addFav(id, name, nature)}
               className="btn btn-outline-warning"
             >
               <i className="far fa-heart"></i>
@@ -39,3 +39,6 @@ export const Card = ({ uid, _id, character }) => {
     </>
   );
 };
+
+
+export default Card;
